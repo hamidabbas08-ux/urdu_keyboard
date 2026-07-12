@@ -1,13 +1,13 @@
-def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file('key.properties')
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-}
-
 plugins {
     id "com.android.application"
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
+}
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
 android {
@@ -36,13 +36,12 @@ android {
         versionName "1.0.0"
     }
 
-    // یہاں ہم نے پلے اسٹور کے لیے سائننگ کنفیگریشن سیٹ کر دی ہے
     signingConfigs {
         release {
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
             storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-            storePassword keystoreProperties['storeProperties'] ? keystoreProperties['storePassword'] : keystoreProperties['storePassword']
+            storePassword keystoreProperties['storePassword']
         }
     }
 
