@@ -1,0 +1,60 @@
+name: Flutter Auto Build (APK & AAB)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. کوڈ ڈاؤن لوڈ کرنا
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. جاوا سیٹ اپ کرنا
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      # 3. فلٹر سیٹ اپ کرنا
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      # 4. گٹ ہب کے سیکرٹس سے کی فائل تیار کرنا
+      - name: Create key.properties from GitHub Secrets
+        run: |
+          echo "storePassword=${{ secrets.STORE_PASSWORD }}" > android/key.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
+          echo "storeFile=upload-keystore.jks" >> android/key.properties
+
+      # 5. پیکیجز ڈاؤن لوڈ کرنا
+      - name: Install dependencies
+        run: flutter pub get
+
+      # 6. آفیشل ریلیز APK بلڈ کرنا
+      - name: Build APK
+        run: flutter build apk --release
+
+      # 7. پلے اسٹور کے لیے AAB بلڈ کرنا
+      - name: Build App Bundle (AAB)
+        run: flutter build appbundle --release
+
+      # 8. فائلوں کو گٹ ہب پر اپلوڈ کرنا
+      - name: Upload APK & AAB Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Release-Builds
+          path: |
+            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/bundle/release/app-release.aab
