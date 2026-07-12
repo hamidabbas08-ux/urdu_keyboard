@@ -20,6 +20,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   fonts:
-    - family: JameelNoori
+    - family: Jameel_Noori_Nastaleeq
       fonts:
         - asset: assets/fonts/Jameel_Noori_Nastaleeq.ttf

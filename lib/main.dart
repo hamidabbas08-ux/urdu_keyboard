@@ -12,7 +12,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        // اب یہاں وہی نام ہے جو آپ کی فائل کا ہے
+        fontFamily: 'Jameel_Noori_Nastaleeq', 
+      ),
       home: const HomeScreen(),
     );
   }
@@ -23,21 +27,19 @@ class HomeScreen extends StatelessWidget {
 
   static const platform = MethodChannel('com.hamid.urdu_keyboard/keyboard_control');
 
-  // بٹن 1 کا فنکشن
   Future<void> _openKeyboardSettings() async {
     try {
       await platform.invokeMethod('openKeyboardSettings');
     } on PlatformException catch (e) {
-      print("Failed to open settings: '${e.message}'.");
+      print("Failed: '${e.message}'.");
     }
   }
 
-  // بٹن 2 کا فنکشن
   Future<void> _showKeyboardPicker() async {
     try {
       await platform.invokeMethod('showKeyboardPicker');
     } on PlatformException catch (e) {
-      print("Failed to show picker: '${e.message}'.");
+      print("Failed: '${e.message}'.");
     }
   }
 
@@ -51,7 +53,7 @@ class HomeScreen extends StatelessWidget {
         title: const Center(
           child: Text(
             'جمیل نوری اردو کی بورڈ',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: 'Jameel_Noori_Nastaleeq'),
           ),
         ),
       ),
@@ -62,18 +64,17 @@ class HomeScreen extends StatelessWidget {
           children: [
             const Text(
               'اردو کی بورڈ ایپ میں خوش آمدید',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, fontFamily: 'Jameel_Noori_Nastaleeq'),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
             const Text(
               'جمیل نوری نستعلیق لکھائی کے ساتھ اپنے موبائل میں اردو ٹائپنگ کو آسان بنائیں۔ کی بورڈ استعمال کرنے کے لیے نیچے دیے گئے بٹنوں پر کلک کریں۔',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
+              style: TextStyle(fontSize: 16, color: Colors.grey, fontFamily: 'Jameel_Noori_Nastaleeq'),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 40),
             
-            // بٹن 1: کی بورڈ فعال کریں
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF2C2C2C),
@@ -82,13 +83,12 @@ class HomeScreen extends StatelessWidget {
               ),
               onPressed: _openKeyboardSettings,
               child: const Text(
-                '1 کریں (Enable) - کی بورڈ فعال',
-                style: TextStyle(fontSize: 18, color: Colors.white),
+                'کی بورڈ فعال (Enable) کریں',
+                style: TextStyle(fontSize: 18, color: Colors.white, fontFamily: 'Jameel_Noori_Nastaleeq'),
               ),
             ),
             const SizedBox(height: 16),
             
-            // بٹن 2: اردو کی بورڈ منتخب کریں
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF2C2C2C),
@@ -97,13 +97,12 @@ class HomeScreen extends StatelessWidget {
               ),
               onPressed: _showKeyboardPicker,
               child: const Text(
-                '2 - اردو کی بورڈ منتخب کریں',
-                style: TextStyle(fontSize: 18, color: Colors.white),
+                'اردو کی بورڈ منتخب کریں',
+                style: TextStyle(fontSize: 18, color: Colors.white, fontFamily: 'Jameel_Noori_Nastaleeq'),
               ),
             ),
             const SizedBox(height: 40),
             
-            // فائنل ٹیسٹ باکس (جہاں کلک کرنے سے کی بورڈ کھل کر سامنے آئے گا)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
@@ -114,10 +113,10 @@ class HomeScreen extends StatelessWidget {
               child: const TextField(
                 decoration: InputDecoration(
                   hintText: 'یہاں کلک کر کے کی بورڈ ٹیسٹ کریں...',
-                  hintStyle: TextStyle(color: Colors.grey),
+                  hintStyle: TextStyle(color: Colors.grey, fontFamily: 'Jameel_Noori_Nastaleeq'),
                   border: InputBorder.none,
                 ),
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white, fontFamily: 'Jameel_Noori_Nastaleeq'),
               ),
             ),
           ],
