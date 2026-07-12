@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      制造- name: Set up JDK
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
@@ -27,7 +27,6 @@ jobs:
         with:
           channel: 'stable'
 
-      # یہاں اب بالکل وہی نام ہیں جو آپ نے گٹ ہب پر بنائے ہیں
       - name: Create key.properties from GitHub Secrets
         run: |
           echo "storePassword=${{ secrets.STOREPASSWORD }}" > android/key.properties
