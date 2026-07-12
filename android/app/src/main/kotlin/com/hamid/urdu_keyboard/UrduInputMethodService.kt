@@ -15,7 +15,7 @@ class UrduInputMethodService : InputMethodService() {
         val mainLayout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setBackgroundColor(Color.parseColor("#121212")) // خوبصورت ڈارک بیک گراؤنڈ
-            padding = 10
+            setPadding(16, 16, 16, 16) // یہاں سنٹیکس کی غلطی کو بالکل ٹھیک کر دیا گیا ہے
         }
 
         // اردو حروفِ تہجی کی لائنیں (Keyboard Rows)
