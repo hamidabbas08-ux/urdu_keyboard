@@ -7,28 +7,28 @@ import android.widget.LinearLayout
 import android.graphics.Color
 import android.graphics.Typeface
 import android.view.Gravity
+import android.view.inputmethod.InputMethodManager
+import android.content.Context
 
 class UrduInputMethodService : InputMethodService() {
     override fun onCreateInputView(): View {
-        // موبائل اسکرین کے حساب سے بٹنوں کی اونچائی سیٹ کرنا (48dp per row)
         val density = resources.displayMetrics.density
         val rowHeight = (48 * density).toInt()
 
-        // مین کی بورڈ کنٹینر
+        // मुख्य कीबोर्ड लेआउट
         val mainLayout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setBackgroundColor(Color.parseColor("#121212")) // خوبصورت ڈارت تھیم
+            setBackgroundColor(Color.parseColor("#121212"))
             setPadding(8, 12, 8, 12)
         }
 
-        // کلاؤڈ کے اندر موجود اصلی جمیل نوری فونٹ کو لوڈ کرنا
         val customTypeface = try {
             Typeface.createFromAsset(assets, "flutter_assets/assets/fonts/Jameel_Noori_Nastaleeq.ttf")
         } catch (e: Exception) {
             Typeface.DEFAULT
         }
 
-        // اردو کے مکمل 39 حروفِ تہجی کی 4 برابر لائنیں
+        // उर्दू के अक्षर
         val row1 = listOf("آ", "ا", "ب", "پ", "ت", "ٹ", "ث", "ج", "چ", "ح")
         val row2 = listOf("خ", "د", "ڈ", "ذ", "ر", "ڑ", "ز", "ژ", "س", "ش")
         val row3 = listOf("ص", "ض", "ط", "ظ", "ع", "غ", "ف", "ق", "ک", "گ")
@@ -36,7 +36,6 @@ class UrduInputMethodService : InputMethodService() {
 
         val allRows = listOf(row1, row2, row3, row4)
 
-        // تمام بٹنوں کو اسکرین پر فٹ کرنا اور نقطوں (Dots) کو ختم کرنا
         for (row in allRows) {
             val rowLayout = LinearLayout(this).apply {
                 orientation = LinearLayout.HORIZONTAL
@@ -56,13 +55,9 @@ class UrduInputMethodService : InputMethodService() {
                     setTextColor(Color.WHITE)
                     setBackgroundColor(Color.parseColor("#2C2C2C"))
                     typeface = customTypeface
-                    
-                    // اینڈرائیڈ کی ڈیفالٹ پیڈنگ زیرو کرنا تاکہ لفظ صاف نظر آئیں
                     setPadding(0, 0, 0, 0)
                     minWidth = 0
                     minHeight = 0
-                    minimumWidth = 0
-                    minimumHeight = 0
                     
                     layoutParams = LinearLayout.LayoutParams(
                         0,
@@ -72,7 +67,6 @@ class UrduInputMethodService : InputMethodService() {
                         setMargins(2, 2, 2, 2)
                     }
 
-                    // بٹن کلک لاجک
                     setOnClickListener {
                         currentInputConnection?.commitText(key, 1)
                     }
@@ -82,7 +76,7 @@ class UrduInputMethodService : InputMethodService() {
             mainLayout.addView(rowLayout)
         }
 
-        // سب سے نیچے والی ایکشن رو (Delete, Space, Enter)
+        // सबसे नीचे वाली स्पेशल रो (बदलिए, Delete, Space, Enter)
         val bottomRowLayout = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER
@@ -94,7 +88,26 @@ class UrduInputMethodService : InputMethodService() {
             }
         }
 
-        // 1. ڈیلیٹ بٹن
+        // 1. कीबोर्ड बदलें बटन (यह वही पॉप-अप लाएगा जो आपको चाहिए)
+        val switchKeyButton = Button(this).apply {
+            text = "🌐" // ग्लोबल आइकॉन जो कीबोर्ड बदलने के लिए इंटरनेशनल स्टैंडर्ड है
+            textSize = 16f
+            setTextColor(Color.WHITE)
+            setBackgroundColor(Color.parseColor("#37474F")) // अलग रंग ताकि पहचान में आए
+            setPadding(0, 0, 0, 0)
+            minWidth = 0
+            minHeight = 0
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.5f).apply {
+                setMargins(2, 2, 2, 2)
+            }
+            setOnClickListener {
+                // यह लाइन तुरंत एंडरॉयड का कीबोर्ड चूसर पॉप-अप खोल देगी
+                val im = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                im.showInputMethodPicker()
+            }
+        }
+
+        // 2. डिलीट बटन
         val deleteButton = Button(this).apply {
             text = "DEL"
             textSize = 14f
@@ -103,7 +116,7 @@ class UrduInputMethodService : InputMethodService() {
             setPadding(0, 0, 0, 0)
             minWidth = 0
             minHeight = 0
-            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.8f).apply {
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.5f).apply {
                 setMargins(2, 2, 2, 2)
             }
             setOnClickListener {
@@ -111,7 +124,7 @@ class UrduInputMethodService : InputMethodService() {
             }
         }
 
-        // 2. اسپیس بار (خالی جگہ)
+        // 3. स्पेस बार
         val spaceButton = Button(this).apply {
             text = "خالی جگہ"
             textSize = 16f
@@ -119,9 +132,7 @@ class UrduInputMethodService : InputMethodService() {
             setBackgroundColor(Color.parseColor("#424242"))
             typeface = customTypeface
             setPadding(0, 0, 0, 0)
-            minWidth = 0
-            minHeight = 0
-            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 4.4f).apply {
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 3.8f).apply {
                 setMargins(2, 2, 2, 2)
             }
             setOnClickListener {
@@ -129,7 +140,7 @@ class UrduInputMethodService : InputMethodService() {
             }
         }
 
-        // 3. انٹر بٹن (درج کریں)
+        // 4. एंटर बटन
         val enterButton = Button(this).apply {
             text = "درج کریں"
             textSize = 13f
@@ -137,9 +148,7 @@ class UrduInputMethodService : InputMethodService() {
             setBackgroundColor(Color.parseColor("#1B5E20"))
             typeface = customTypeface
             setPadding(0, 0, 0, 0)
-            minWidth = 0
-            minHeight = 0
-            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.8f).apply {
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.5f).apply {
                 setMargins(2, 2, 2, 2)
             }
             setOnClickListener {
@@ -149,6 +158,7 @@ class UrduInputMethodService : InputMethodService() {
             }
         }
 
+        bottomRowLayout.addView(switchKeyButton)
         bottomRowLayout.addView(deleteButton)
         bottomRowLayout.addView(spaceButton)
         bottomRowLayout.addView(enterButton)
