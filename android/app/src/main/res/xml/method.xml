@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <input-method xmlns:android="http://schemas.android.com/apk/res/android"
-    android:icon="@mipmap/ic_launcher"
-    android:settingsActivity="com.hamid.urdu_keyboard.MainActivity">
+    android:label="جمیل نوری اردو کی بورڈ">
     <subtype
-        android:label="Urdu (Jameel Nastaleeq)"
         android:imeSubtypeLocale="ur"
-        android:imeSubtypeMode="keyboard" />
+        android:imeSubtypeMode="keyboard"
+        android:label="اردو" />
 </input-method>
