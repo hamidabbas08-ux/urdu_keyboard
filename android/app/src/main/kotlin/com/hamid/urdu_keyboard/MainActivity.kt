@@ -15,13 +15,13 @@ class MainActivity: FlutterActivity() {
         super.configureFlutterEngine(flutterEngine)
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
             if (call.method == "openKeyboardSettings") {
-                // بٹن 1 کے لیے: اینڈرائیڈ کی کی بورڈ سیٹنگز کھولنا
+                // یہ انٹینٹ سیمسنگ اور دیگر فونز پر سیدھا وہ لسٹ کھولے گا جہاں کی بورڈ آن/آف ہوتے ہیں
                 val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
                 result.success(true)
             } else if (call.method == "showKeyboardPicker") {
-                // بٹن 2 کے لیے: کی بورڈ تبدیل کرنے والا سسٹم ڈائیلاگ کھولنا
+                // یہ بالکل وہی میپ جیسا پاپ اپ چوائس باکس اسکرین پر فوری ظاہر کرے گا
                 val im = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 im.showInputMethodPicker()
                 result.success(true)

@@ -14,7 +14,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.dark,
-        // اب یہاں وہی نام ہے جو آپ کی فائل کا ہے
         fontFamily: 'Jameel_Noori_Nastaleeq', 
       ),
       home: const HomeScreen(),
@@ -31,7 +30,7 @@ class HomeScreen extends StatelessWidget {
     try {
       await platform.invokeMethod('openKeyboardSettings');
     } on PlatformException catch (e) {
-      print("Failed: '${e.message}'.");
+      print("Error: ${e.message}");
     }
   }
 
@@ -39,7 +38,7 @@ class HomeScreen extends StatelessWidget {
     try {
       await platform.invokeMethod('showKeyboardPicker');
     } on PlatformException catch (e) {
-      print("Failed: '${e.message}'.");
+      print("Error: ${e.message}");
     }
   }
 
@@ -62,47 +61,50 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const Icon(Icons.keyboard, size: 80, color: Colors.amber),
+            const SizedBox(height: 24),
             const Text(
-              'اردو کی بورڈ ایپ میں خوش آمدید',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, fontFamily: 'Jameel_Noori_Nastaleeq'),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'جمیل نوری نستعلیق لکھائی کے ساتھ اپنے موبائل میں اردو ٹائپنگ کو آسان بنائیں۔ کی بورڈ استعمال کرنے کے لیے نیچے دیے گئے بٹنوں پر کلک کریں۔',
-              style: TextStyle(fontSize: 16, color: Colors.grey, fontFamily: 'Jameel_Noori_Nastaleeq'),
+              'صرف 2 آسان مراحل میں کی بورڈ فعال کریں',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, fontFamily: 'Jameel_Noori_Nastaleeq'),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 40),
             
-            ElevatedButton(
+            // مرحلہ 1 کا بٹن
+            ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF2C2C2C),
-                minimumSize: const Size.fromHeight(60),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                minimumSize: const Size.fromHeight(65),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                side: const BorderSide(color: Colors.amber, width: 1),
               ),
               onPressed: _openKeyboardSettings,
-              child: const Text(
-                'کی بورڈ فعال (Enable) کریں',
+              icon: const Icon(Icons.settings, color: Colors.amber),
+              label: const Text(
+                'مرحلہ 1: کی بورڈ لسٹ میں آن کریں',
                 style: TextStyle(fontSize: 18, color: Colors.white, fontFamily: 'Jameel_Noori_Nastaleeq'),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
             
-            ElevatedButton(
+            // مرحلہ 2 کا بٹن (میپ جیسا پاپ اپ چوائس)
+            ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF2C2C2C),
-                minimumSize: const Size.fromHeight(60),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                minimumSize: const Size.fromHeight(65),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                side: const BorderSide(color: Colors.green, width: 1),
               ),
               onPressed: _showKeyboardPicker,
-              child: const Text(
-                'اردو کی بورڈ منتخب کریں',
+              icon: const Icon(Icons.touch_app, color: Colors.green),
+              label: const Text(
+                'مرحلہ 2: اردو کی بورڈ منتخب کریں',
                 style: TextStyle(fontSize: 18, color: Colors.white, fontFamily: 'Jameel_Noori_Nastaleeq'),
               ),
             ),
             const SizedBox(height: 40),
             
+            // ٹیسٹ باکس
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
@@ -112,7 +114,7 @@ class HomeScreen extends StatelessWidget {
               ),
               child: const TextField(
                 decoration: InputDecoration(
-                  hintText: 'یہاں کلک کر کے کی بورڈ ٹیسٹ کریں...',
+                  hintText: 'یہاں کلک کر کے واٹس ایپ کی طرح ٹیسٹ کریں...',
                   hintStyle: TextStyle(color: Colors.grey, fontFamily: 'Jameel_Noori_Nastaleeq'),
                   border: InputBorder.none,
                 ),
